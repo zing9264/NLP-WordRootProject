@@ -9,13 +9,30 @@ app = Flask(__name__)
 def index():
     if request.method == 'POST':
         inputword = request.values.get('Inputword').lower()
-        wordrootPredict=''
+        wordrootPredict = ('no result')
+        esleroots = ''
+        inputroot=inputword
+
         print(request.values.get('Inputword'))
+        print(request.values.get('Togglemodel1'))
         if request.values.get('Togglemodel1') == 'on':
-            wordrootPredict = fwr2.wordrootPredict(inputword)[0][0]
-        ans1 = test.test(inputword)
+            try:
+                fwr=fwr2.wordrootPredict(inputword)
+                wordrootPredict = fwr[0][0]
+                inputroot=' '.join(wordrootPredict)
+                k = []
+                for item in fwr[1:5]:
+                    print(item)
+                    k.append(item[0])
+                esleroots=k
+            except:
+                wordrootPredict = ('no result')
+
+        if request.values.get('Togglemodel1') == None and request.values.get('Togglemodel2') == None and request.values.get('Togglemodel3') == None and request.values.get('Togglemodel4') == 'on':
+            inputroot = inputword
         
-        return render_template("index.html", title="ISLab　NLP　Final",wordrootPredict=wordrootPredict)
+        root_suggest()
+        return render_template("index.html", title="ISLab　NLP　Final",inputword=inputword,wordrootPredict=wordrootPredict,esleroots=esleroots,inputroot=inputroot,root_suggest=root_suggest)
     return render_template("index.html", title="ISLab　NLP　Final")
  
 

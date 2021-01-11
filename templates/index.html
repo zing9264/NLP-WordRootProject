@@ -9,10 +9,10 @@
         <div class="form-row">
         <div class="col-3" ></div>
           <div class="col-5" >
-            <input type="text" name='Inputword' class="form-control" placeholder="input word">
+            <input type="text" name='Inputword' class="form-control" value="{{inputword}}" placeholder="input word">
         </div>
         <div class="col-1">
-            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+            <button type="submit" class="btn btn-outline-secondary mb-2">搜尋</button>
         </div>
         </div>
         <div class="form-row">
@@ -20,44 +20,86 @@
             <div class="form-check col-3" >
                     <div class="custom-control custom-switch">
                         <input type="checkbox" name='Togglemodel1' class="custom-control-input" id="model1" checked="checked" >
-                        <label class="custom-control-label" for="model1">Toggle model1</label>
+                        <label class="custom-control-label" for="model1">字根拆解</label>
                     </div>
                     <div class="custom-control custom-switch">
                         <input type="checkbox" name='Togglemodel2' class="custom-control-input" id="model2" checked="checked">
-                        <label class="custom-control-label" for="model2">Toggle model2 </label>
+                        <label class="custom-control-label" for="model2">字根意思 </label>
                     </div>
                     <div class="custom-control custom-switch">
                         <input type="checkbox" name='Togglemodel3' class="custom-control-input" id="model3" checked="checked">
-                        <label class="custom-control-label" for="model3">Toggle model3</label>
+                        <label class="custom-control-label" for="model3">字根延伸</label>
                     </div>
                     <div class="custom-control custom-switch">
                         <input type="checkbox" name='Togglemodel4' class="custom-control-input" id="model4" >
-                        <label class="custom-control-label" for="model4">Toggle model4</label>
+                        <label class="custom-control-label" for="model4">字根組合</label>
                     </div>
             </div>
         </div>
 
     </form>
 
-    <div class="row">
+
+
+    <div class="row root-separate">
         <div class="col-sm">
-            {{wordrootPredict}}
+            <div class="card">
+                <div class="card-header">
+                    字根拆解
+                </div>
+                <div class="card-body">
+                  <blockquote class="blockquote mb-0">
+                    <p>{{wordrootPredict}}</p>
+                    <footer class="blockquote-footer">其他組合: {{esleroots}}</footer>
+                  </blockquote>
+                </div>
+              </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row root-separate">
         <div class="col-sm">
-            {{ans1}}
+            <div class="card">
+                <div class="card-header">
+                    字根意思
+                </div>
+                <div class="card-body">
+                  <blockquote class="blockquote mb-0">
+                    <p>{{wordrootPredict}}</p>
+                    <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                  </blockquote>
+                </div>
+              </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row root-separate">
         <div class="col-sm">
-            {{ans1}}
+            <div class="card">
+                <div class="card-header">
+                    字根延伸
+                </div>
+                <div class="card-body">
+                  <blockquote class="blockquote mb-0">
+                    <p>{{wordrootPredict}}</p>
+                    <footer class="blockquote-footer">其他組合 <cite title="Source Title">{{esleroots}}</cite></footer>
+                  </blockquote>
+                </div>
+              </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row root-separate">
         <div class="col-sm">
-            {{ans1}}
+            <div class="card">
+                <div class="card-header">
+                    字根組合復原單字
+                </div>
+                <div class="card-body">
+                  <blockquote class="blockquote mb-0">
+                    <p>輸入字根:{{inputroot}}</p>
+                    <p>復原單字:{{root_suggest}}}</p>
+                  </blockquote>
+                </div>
+              </div>
         </div>
     </div>
-  </div>
+
 {% endblock %}
