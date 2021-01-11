@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request
 
 import wordrootmodels.models as test
 import wordrootmodels.fwr2 as fwr2
+import wordrootmodels.rootwordcombine as rootwordcombine
 
 app = Flask(__name__)
 
@@ -31,8 +32,13 @@ def index():
         if request.values.get('Togglemodel1') == None and request.values.get('Togglemodel2') == None and request.values.get('Togglemodel3') == None and request.values.get('Togglemodel4') == 'on':
             inputroot = inputword
         
-        root_suggest()
-        return render_template("index.html", title="ISLab　NLP　Final",inputword=inputword,wordrootPredict=wordrootPredict,esleroots=esleroots,inputroot=inputroot,root_suggest=root_suggest)
+        root_suggest = rootwordcombine.rootwordcombine(inputroot)
+        root_suggest_inputconbine=root_suggest[0]
+        root_suggest_suggest=root_suggest[1]
+        root_suggest_lemma=root_suggest[2]
+        root_suggest_crawl=root_suggest[3]
+
+        return render_template("index.html", title="ISLab　NLP　Final",inputword=inputword,wordrootPredict=wordrootPredict,esleroots=esleroots,inputroot=inputroot,root_suggest_inputconbine=root_suggest_inputconbine,root_suggest_suggest=root_suggest_suggest,root_suggest_lemma=root_suggest_lemma,root_suggest_crawl=root_suggest_crawl)
     return render_template("index.html", title="ISLab　NLP　Final")
  
 

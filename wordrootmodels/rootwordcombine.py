@@ -1,5 +1,9 @@
 import requests
 from bs4 import BeautifulSoup as soup
+from spellchecker import SpellChecker
+from nltk.stem import WordNetLemmatizer  
+import nltk
+
 
 def crawl_parse(query):
     data_dict = {
@@ -48,98 +52,48 @@ def crawl_parse(query):
         print('Failed', response.status_code)
         return None
 
-    return data_dict
+    return data_dict 
+        
 
 
-
-from collections import Counter, defaultdict
-import math, re
-import kenlm
-import operator
-import itertools
-
-model = kenlm.Model('bnc.prune.arpa')
-
-
-def words(text): return re.findall(r'\w+|[,.?]', text.lower())
-
-
-WORDS = Counter(words(open('big.txt').read()))
-
-
-def P(word, N=sum(WORDS.values())): 
-    "Probability of `word`."
-    return float(WORDS[word] / N)
-
-
-def known(words): 
-    "The subset of `words` that appear in the dictionary of WORDS."
-    return set(w for w in words if w in WORDS)
-
-
-def edits1(word):
-    "All edits that are one edit away from `word`."
-    letters    = 'abcdefghijklmnopqrstuvwxyz'
-    splits     = [(word[:i], word[i:])    for i in range(len(word) + 1)]
-    deletes    = [L + R[1:]               for L, R in splits if R]
-    transposes = [L + R[1] + R[0] + R[2:] for L, R in splits if len(R)>1]
-    replaces   = [L + c + R[1:]           for L, R in splits if R for c in letters]
-    inserts    = [L + c + R               for L, R in splits for c in letters]
-    
-    return set(deletes + transposes + replaces + inserts)
-
-
-def edits2(word):
-    "All edits that are two edits away from `word`."
-    return (e2 for e1 in edits1(word) for e2 in edits1(e1))
+def lemmatize_all(sentence):
+    wnl = WordNetLemmatizer()
+    for word, tag in nltk.pos_tag(nltk.word_tokenize(sentence)):
+        if tag.startswith('NN'):
+            yield wnl.lemmatize(word, pos='n')
+        elif tag.startswith('VB'):
+            yield wnl.lemmatize(word, pos='v')
+        elif tag.startswith('JJ'):
+            yield wnl.lemmatize(word, pos='a')
+        elif tag.startswith('R'):
+            yield wnl.lemmatize(word, pos='r')
+        else:
+            yield word
 
 
 def suggest(word):
-    '''return top 5 words as suggestion, original_word as top1 when original_word is correct'''
+    spell = SpellChecker()
+    # find those words that may be misspelled
+    misspelled = spell.unknown( [word])
+    for word in misspelled:
+        # Get the one `most likely` answer
+        mostlikely=spell.correction(word)
+        print('--mostlikely=' '---')
+        print(mostlikely)
+        return mostlikely
+    print('--word---')
     print(word)
-    print(word[-3:])
+    return word
 
-    if word[-3:] == 'ing':
-        word = word[:-3]+'y'
-        print(word)
-    suggest_P = {}
-    edits_set = edits1(word).union(set(edits2(word)))
-    for candidate in known(edits_set):
-        suggest_P[candidate] = P(candidate)
-    if word in WORDS:
-        suggest_P[word] = 1
-    suggest_can = sorted(suggest_P, key=suggest_P.get, reverse=True)[:5]
+
+
+def rootwordcombine(word):
+    newword = "".join(word.split())
+    queryword = suggest(newword)
+    lemma=''.join(lemmatize_all(queryword))
+
+    crawl = crawl_parse(lemma)
+    return (newword, queryword, lemma,crawl)
     
-    return suggest_can
-
-
-
 if __name__ == "__main__":
-
-    # target = ['quering','acquir']
-    # for item in target:
-    #     print(item + ':\n')
-    #     result= crawl_parse(item)
-    #     print(crawl_parse(item))
-    #     print('\n')
-    #     if (result == None):
-    #         sug_word=suggest(item)
-    #         print(sug_word)
-    #         try:
-    #             crawl_parse(sug_word[0])
-    #         except Exception as e:
-    #             print(e)
-
-
-    testlist = ['definit', 'ion', 's']
-
-
-    
-    print(testlist[-1:])
-    if testlist[-1:] == ['s']:
-        testlist=testlist[:-1]
-    testword="".join(testlist)
-    sug_word=suggest(testword)
-    print(sug_word)
-    result= crawl_parse(testword)
-    print(result)
+    print(rootwordcombine('com- quering'))

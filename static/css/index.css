@@ -1,3 +1,8 @@
 .container .row {
     text-align:center;
 }
+.custom-control-input:checked~.custom-control-label::before{
+    color: #fff;
+    border-color: #b09479;
+    background-color: #b09479;
+}
