@@ -7,7 +7,9 @@ from collections import Counter
 from spellchecker import SpellChecker
 from bs4 import BeautifulSoup as soup
 
-
+prefix_freq = Counter()
+affix_freq = Counter()
+suffix_freq = Counter()
 
 def words(text): return re.findall(r'\w+', text.lower())
 
@@ -30,6 +32,10 @@ def segment(word):
 
 def calculate(word):
     output = []
+    global prefix_freq 
+    global affix_freq 
+    global suffix_freq
+
     for i in segment(word):
         if prefix_freq[i[0]] == 0:
             p1 = 1 / (sum(prefix_freq.values()) * 10 ** len(i[0]))
@@ -101,6 +107,7 @@ def search2(word):
     else:
         print('Failed', response.status_code)
 
+
 def meaningOfRoots(root, a):
     if a == 0:
         x = search(root+'-')
@@ -119,30 +126,11 @@ def meaningOfRoots(root, a):
             if x:
                 print(x[0])
                 print(x[1])
+    return x
 
 # demo = ['international', 'scholarship', 'university', 'education', 'programme']
 
 
 if __name__ == "__main__":
-    with open('etym.entries.v1.format.json', 'r', encoding='utf-8') as f:
-        data = json.load(f)
+    pass
 
-    prefix_freq = Counter()
-    affix_freq = Counter()
-    suffix_freq = Counter()
-
-    for i in data['results']:
-        for j in i['foreigns'] + i['cross-references']:
-            if j == '' or j[0] == '*' or j[0] == j[-1] == '-':
-                continue
-            elif j[-1] == '-':
-                prefix_freq[j[:-1]] += 1
-            elif j[0] == '-':
-                suffix_freq[j[1:]] += 1
-            else:
-                affix_freq[j] += 1
-    
-    x = calculate('powerful')
-    meaningOfRoots(x[0], 0)
-    print()
-    meaningOfRoots(x[2], 1)

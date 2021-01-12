@@ -78,11 +78,7 @@ def suggest(word):
     for word in misspelled:
         # Get the one `most likely` answer
         mostlikely=spell.correction(word)
-        print('--mostlikely=' '---')
-        print(mostlikely)
         return mostlikely
-    print('--word---')
-    print(word)
     return word
 
 
