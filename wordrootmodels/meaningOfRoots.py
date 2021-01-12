@@ -111,8 +111,11 @@ def search2(word):
 def meaningOfRoots(root, a):
     if a == 0:
         x = search(root+'-')
-    else:
+    elif a == 2:
         x = search('-'+root)
+    else:
+        x = False
+    
     if x:
         print(x[0])
         print(x[1])
