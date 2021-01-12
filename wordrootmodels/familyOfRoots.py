@@ -44,7 +44,7 @@ def calculate(word):
 def familyOfRoots(root):
     url = f'https://www.etymonline.com/search?q={root}'
     response = requests.get(url)
-
+    anslist=[]
     if response.status_code == 200:
         text = response.text
         html = soup(text, "html.parser")
@@ -55,10 +55,16 @@ def familyOfRoots(root):
                 continue
             if root not in i.text:
                 continue
-            print(i.text)
+            anslist.append(i.text)
+        if len(anslist) == 0:
+            anslist.append('查無資料')
+        
+        result=',  '.join(anslist)
+
+        return(result)
     else:
         print('Failed', response.status_code)
-
+        return '查無資料'
 
 
 # demo = ['international', 'scholarship', 'university', 'education', 'programme']

@@ -79,7 +79,7 @@ def search(word):
             return False
 
         if word in title.text:
-            return title.text, content.text
+            return [title.text, content.text]
         else:
             return False
     else:
@@ -101,7 +101,7 @@ def search2(word):
             return False
 
         if word == words(title.text)[0]:
-            return title.text, content.text
+            return [title.text, content.text]
         else:
             return False
     else:
@@ -129,6 +129,8 @@ def meaningOfRoots(root, a):
             if x:
                 print(x[0])
                 print(x[1])
+    if x == False:
+        x=['查無資料','查無資料']
     return x
 
 # demo = ['international', 'scholarship', 'university', 'education', 'programme']
