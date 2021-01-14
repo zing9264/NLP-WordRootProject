@@ -32,9 +32,7 @@
 
 <body>
   <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-blackboard">
-    <a class="navbar-brand" href="/">
-      <p class="h3 mx-1">Finding Word Root - islab</p>
-    </a>
+      <h1 class="asd mx-1">Finding Word Root - islab</h1>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -54,17 +52,3 @@
 </footer>
 </body>
 
-<script type="text/javascript">
-    console.log(location.href.indexOf('all_record'))
-    if (location.href.indexOf('all_record') !=-1){
-        document.getElementById("History").classList.add("active");
-        document.getElementById("Home").classList.remove("active");
-    }
-    else if (location.href.indexOf('home') !=-1){
-        document.getElementById("Home").classList.add("active");
-        document.getElementById("History").classList.remove("active");
-    }else{
-        document.getElementById("Home").classList.remove("active");
-        document.getElementById("History").classList.remove("active");
-    }
-</script>
